@@ -1,0 +1,67 @@
+<div class="row">
+  <div class="col-md-12">
+    <table class="table display datatable-basic" id="costing_list">
+        <thead style="background-color:#ebebe0">
+            <tr>
+                <th class="text-center">Action</th>
+                <th>Status</th>
+                <th>Costing ID</th>
+                <th>Style</th>
+                <th>Bom Stage</th>
+                <th>Season</th>
+                <th>Color Type</th>
+                <th>FOB</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+  </div>
+</div>
+
+<div bsModal #copyModel="bs-modal" [config]="{}" class="modal fade" >
+ <div class="modal-dialog modal-sm">
+     <div class="modal-content">
+        <form class="form-horizontal" [formGroup]="formGroup" (ngSubmit)="copyCosting()">
+             <div class="modal-header  bg-teal-300">
+                 <button type="button" class="close" (click)="copyModel.hide()">&times;</button>
+                 <h5 class="modal-title">Copy Cost Sheet - {{ selectedCostingId }}</h5>
+             </div>
+             <div class="modal-body">
+                 <div class="row">
+                   <div class="col-md-12">
+                     <label>Bom Stage<span class="text-danger">*</span></label>
+                     <select class="form-control input-xxs" formControlName="bom_stage_id">
+                       <option [ngValue]="null">... Select one ...</option>
+                       <option *ngFor="let bomStage of bomStages$ | async" [value]="bomStage.bom_stage_id">{{ bomStage.bom_stage_description }}</option>
+                     </select>
+                     <span class="err" > {{ appValidator.validate_field('bom_stage_id')  }} </span>
+                   </div>
+                   <div class="col-md-12">
+                     <label>Season<span class="text-danger">*</span></label>
+                     <select class="form-control input-xxs" formControlName="season_id">
+                       <option [ngValue]="null">... Select one ...</option>
+                       <option *ngFor="let season of seasons$ | async" [value]="season.season_id">{{ season.season_name }}</option>
+                     </select>
+                     <span class="err" > {{ appValidator.validate_field('season_id')  }} </span>
+                   </div>
+                   <div class="col-md-12">
+                     <label>Color Type<span class="text-danger">*</span></label>
+                     <select class="form-control input-xxs" formControlName="color_type_id">
+                       <option [ngValue]="null">... Select one ...</option>
+                       <option *ngFor="let colorType of colorTypes$ | async" [value]="colorType.col_opt_id">{{ colorType.color_option }}</option>
+                     </select>
+                     <span class="err" > {{ appValidator.validate_field('color_type_id')  }} </span>
+                   </div>
+                </div>
+
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn bg-teal-400 btn-labeled btn-danger btn-xs" (click)="copyModel.hide()"><b><i class="icon-cross"></i></b> Close</button>
+                 <button type="submit" class="btn bg-teal-400 btn-labeled btn-success btn-xs" [disabled]="formGroup.invalid || processing">
+                     <b><i class="icon-floppy-disk"></i></b> Copy</button>
+             </div>
+             </form>
+         </div>
+     </div>
+ </div>
